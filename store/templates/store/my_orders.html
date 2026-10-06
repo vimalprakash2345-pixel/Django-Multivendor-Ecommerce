@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders - MyStore</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .order-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .order-card p {
+            margin: 10px 0;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        /* Cancel Button */
+        .cancel-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 11px 20px;
+            background: #ef4444;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            border: none;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background: #dc2626;
+        }
+
+        .cancelled {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 18px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🛒 VStore
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'wishlist' %}">
+                Wishlist ❤️
+            </a>
+
+            <a href="{% url 'cart' %}">
+                Cart 🛒
+            </a>
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <h1>
+            My Orders
+        </h1>
+
+
+        {% if orders %}
+
+            {% for order in orders %}
+
+                <div class="order-card">
+
+                    <h2>
+                        Order #{{ forloop.counter }}
+                    </h2>
+
+
+                    <p>
+                        <strong>Name:</strong>
+                        {{ order.customer_name }}
+                    </p>
+
+
+                    <p>
+                        <strong>Email:</strong>
+                        {{ order.email }}
+                    </p>
+
+
+                    <p>
+                        <strong>Total Amount:</strong>
+                        ₹{{ order.total_amount }}
+                    </p>
+
+
+                    <p>
+                        <strong>Date:</strong>
+                        {{ order.created_at|date:"d M Y, h:i A" }}
+                    </p>
+
+
+                    <p class="status">
+
+                        <strong>Status:</strong>
+
+                        {% if order.status == "Cancelled" %}
+
+                            <span class="cancelled">
+                                {{ order.status }}
+                            </span>
+
+                        {% else %}
+
+                            {{ order.status }}
+
+                        {% endif %}
+
+                    </p>
+
+
+                    <!-- Cancel Order -->
+                    {% if order.status == "Pending" %}
+
+                        <a
+                            href="{% url 'cancel_order' order.id %}"
+                            class="cancel-btn"
+                            onclick="return confirm('Are you sure you want to cancel this order?');"
+                        >
+                            ❌ Cancel Order
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+
+                <h2>
+                    No orders yet
+                </h2>
+
+                <p>
+                    You haven't placed any orders.
+                </p>
+
+                <a
+                    href="{% url 'home' %}"
+                    class="back-btn"
+                >
+                    Continue Shopping
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

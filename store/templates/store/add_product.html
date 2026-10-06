@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Product - VStore</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        select {
+            background: white;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🛒 MyStore - Seller
+        </div>
+
+        <div class="nav-links">
+            <a href="{% url 'seller_dashboard' %}">Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <h1>Add Product</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <!-- Product Name -->
+            <div class="form-group">
+                <label>Product Name</label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter product name"
+                    required
+                >
+            </div>
+
+
+            <!-- Category -->
+            <div class="form-group">
+                <label>Category</label>
+
+                <select name="category" required>
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Electronics">
+                        Electronics
+                    </option>
+
+                    <option value="Mobiles">
+                        Mobiles
+                    </option>
+
+                    <option value="Laptops">
+                        Laptops
+                    </option>
+
+                    <option value="Clothing">
+                        Clothing
+                    </option>
+
+                    <option value="Shoes">
+                        Shoes
+                    </option>
+
+                    <option value="Home & Kitchen">
+                        Home & Kitchen
+                    </option>
+
+                    <option value="Beauty">
+                        Beauty
+                    </option>
+
+                    <option value="Books">
+                        Books
+                    </option>
+
+                    <option value="Sports">
+                        Sports
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+            </div>
+
+
+            <!-- Description -->
+            <div class="form-group">
+                <label>Description</label>
+
+                <textarea
+                    name="description"
+                    placeholder="Enter product description"
+                    required
+                ></textarea>
+            </div>
+
+
+            <!-- Price -->
+            <div class="form-group">
+                <label>Price</label>
+
+                <input
+                    type="number"
+                    name="price"
+                    step="0.01"
+                    min="0"
+                    placeholder="Enter price"
+                    required
+                >
+            </div>
+
+
+            <!-- Stock -->
+            <div class="form-group">
+                <label>Stock</label>
+
+                <input
+                    type="number"
+                    name="stock"
+                    min="0"
+                    placeholder="Enter stock quantity"
+                    required
+                >
+            </div>
+
+
+            <!-- Product Image -->
+            <div class="form-group">
+                <label>Product Image</label>
+
+                <input
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                >
+            </div>
+
+
+            <!-- Save -->
+            <button type="submit" class="save-btn">
+                Save Product
+            </button>
+
+        </form>
+
+
+        <a
+            href="{% url 'seller_dashboard' %}"
+            class="back-btn"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</body>
+</html>

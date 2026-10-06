@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Wishlist - VStore</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        /* Wishlist Grid */
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(230px, 1fr)
+            );
+            gap: 25px;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .product-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .category {
+            display: inline-block;
+            background: #e5e7eb;
+            color: #374151;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Buttons */
+        .view-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 7px;
+            margin-bottom: 10px;
+        }
+
+        .view-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .remove-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #ef4444;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .remove-btn:hover {
+            background: #dc2626;
+        }
+
+        /* Empty Wishlist */
+        .empty {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        .empty p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .shop-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            padding: 25px;
+            background: #111827;
+            color: white;
+            text-align: center;
+        }
+
+        /* Mobile */
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 18px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            🛒 VStore
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'wishlist' %}">
+                 Wishlist ❤️
+            </a>
+
+            <a href="{% url 'cart' %}">
+                🛒 Cart
+            </a>
+
+            <a href="{% url 'my_orders' %}">
+                My Orders
+            </a>
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Wishlist -->
+    <div class="container">
+
+        <h1>
+            My Wishlist ❤️
+        </h1>
+
+
+        {% if wishlist_items %}
+
+            <div class="wishlist-grid">
+
+                {% for item in wishlist_items %}
+
+                    <div class="product-card">
+
+                        <!-- Image -->
+                        {% if item.product.image %}
+
+                            <img
+                                src="{{ item.product.image.url }}"
+                                alt="{{ item.product.name }}"
+                            >
+
+                        {% endif %}
+
+
+                        <!-- Category -->
+                        <span class="category">
+                            {{ item.product.category }}
+                        </span>
+
+
+                        <!-- Product Name -->
+                        <h3>
+                            {{ item.product.name }}
+                        </h3>
+
+
+                        <!-- Price -->
+                        <p class="price">
+                            ₹{{ item.product.price }}
+                        </p>
+
+
+                        <!-- View Product -->
+                        <a
+                            href="{% url 'product_detail' item.product.id %}"
+                            class="view-btn"
+                        >
+                            View Product
+                        </a>
+
+
+                        <!-- Remove -->
+                        <a
+                            href="{% url 'remove_from_wishlist' item.product.id %}"
+                            class="remove-btn"
+                        >
+                            ❌ Remove
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+
+                <p>
+                    Your wishlist is empty ❤️
+                </p>
+
+                <a
+                    href="{% url 'home' %}"
+                    class="shop-btn"
+                >
+                    Continue Shopping
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            © 2026 MyStore. All rights reserved.
+        </p>
+
+    </footer>
+
+</body>
+</html>

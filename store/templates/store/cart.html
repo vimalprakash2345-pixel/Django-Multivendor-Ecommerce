@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VStore - Cart</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .cart-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .cart-container h1 {
+            margin-bottom: 25px;
+        }
+
+        .cart-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .quantity {
+            color: #555;
+            margin-top: 8px;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .total {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            text-align: right;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .checkout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            margin-left: 10px;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .checkout-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .quantity-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .qty-btn {
+            width: 35px;
+            height: 35px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 22px;
+        }
+
+        .qty-number {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            display: inline-block;
+            margin-top: 12px;
+            color: #dc2626;
+            text-decoration: none;
+        }
+
+        .item-total {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            🛒 VStore
+        </div>
+
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'cart' %}">Cart 🛒</a>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+
+        <h1>🛒 Your Cart</h1>
+
+        {% for item in cart_items %}
+
+            <div class="cart-item">
+
+                <div>
+
+                    <div class="product-name">
+                        {{ item.product.name }}
+                    </div>
+
+                    <div class="price">
+                        ₹{{ item.product.price }}
+                    </div>
+
+                    <div class="quantity">
+                        Quantity: {{ item.quantity }}
+                    </div>
+
+                    <div class="quantity-buttons">
+
+                        <a href="{% url 'decrease_quantity' item.id %}" class="qty-btn">
+                            −
+                        </a>
+
+                        <span class="qty-number">
+                            {{ item.quantity }}
+                        </span>
+
+                        <a href="{% url 'increase_quantity' item.id %}" class="qty-btn">
+                            +
+                        </a>
+
+                    </div>
+
+                    <a href="{% url 'remove_from_cart' item.id %}" class="remove-btn">
+                        Remove
+                    </a>
+
+                </div>
+
+                <div class="item-total">
+                    ₹{% widthratio item.product.price 1 item.quantity %}
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <p>Your cart is empty.</p>
+
+        {% endfor %}
+
+        {% if cart_items %}
+
+            <div class="total">
+                Total: ₹{{ total }}
+            </div>
+
+        {% endif %}
+
+        <a href="{% url 'home' %}" class="back-btn">
+            ← Continue Shopping
+        </a>
+
+        <a href="{% url 'checkout' %}" class="checkout-btn">
+            Proceed to Checkout →
+        </a>
+
+    </div>
+
+</body>
+</html>
